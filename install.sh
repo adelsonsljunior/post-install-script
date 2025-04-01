@@ -18,6 +18,7 @@ APT_PROGRAMS=(
     build-essential
     code
     vagrant
+    zsh
 )
 
 FLATPAK_PROGRAMS=(
@@ -144,6 +145,22 @@ INSTALL_SDKMAN_JAVA() {
     sdk install java
 }
 
+INSTALL_OH_MY_ZSH() {
+    echo "[INFO] - Instalando oh-my-zsh."
+    yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+}
+
+INSTALL_OH_MY_ZSH_PLUGINS() {
+    echo "[INFO] - Instalando plugins do oh-my-zsh."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+}
+
+ZSH_CONFIG() {
+    echo "[INFO] - Copiando configurações do zsh."
+    cp ./configs/zsh/.zshrc $HOME/.zshrc
+}
+
 GIT_CHANGE_DEFAULT_BRANCH_NAME() {
     echo "[INFO] - Alterando nome da branch padrão do git."
     git config --global init.defaultBranch main
@@ -168,5 +185,8 @@ INSTALL_DOCKER
 UP_PORTAINER
 INSTALL_ASDF
 INSTALL_SDKMAN_JAVA
+INSTALL_OH_MY_ZSH
+INSTALL_OH_MY_ZSH_PLUGINS
+ZSH_CONFIG
 GIT_CHANGE_DEFAULT_BRANCH_NAME
 UPDATE_AND_CLEAR_SYSTEM
