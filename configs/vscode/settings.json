@@ -1,12 +1,13 @@
 {
     // Appearance
     "workbench.colorTheme": "Nord",
-    "workbench.iconTheme": "material-icon-theme",
-    "editor.fontSize": 16,
-    "terminal.integrated.fontSize": 16,
+    "workbench.iconTheme": "eq-material-theme-icons-light",
+    "editor.fontSize": 15,
+    "terminal.integrated.fontSize": 14,
     // Pets
-    "vscode-pets.petType": "totoro",
+    "vscode-pets.petType": "cat",
     "vscode-pets.petSize": "small",
+    "vscode-pets.petColor": "black",
     "vscode-pets.throwBallWithMouse": true,
     // Configs
     "files.autoSave": "afterDelay"

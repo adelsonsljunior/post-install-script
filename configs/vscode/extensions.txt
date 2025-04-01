@@ -10,9 +10,7 @@ ms-vscode-remote.remote-wsl
 ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.remote-explorer
 ms-vscode.remote-server
-mtxr.sqltools
-mtxr.sqltools-driver-pg
-pkief.material-icon-theme
+equinusocio.vsc-material-theme-icons
 rangav.vscode-thunder-client
 tonybaloney.vscode-pets
 visualstudioexptteam.intellicode-api-usage-examples
