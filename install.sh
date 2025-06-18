@@ -20,6 +20,7 @@ APT_PROGRAMS=(
     vagrant
     zsh
     bruno
+    tilix
 )
 
 FLATPAK_PROGRAMS=(
@@ -36,6 +37,7 @@ DEPENDENCIES=(
     zip
     unzip
     git
+    dconf
 )
 
 GREEN='\e[0;32m'
@@ -103,6 +105,9 @@ ADD_EXTERN_REPOS() {
     #BRUNO
     sudo gpg --no-default-keyring --keyring /etc/apt/keyrings/bruno.gpg --keyserver keyserver.ubuntu.com --recv-keys 9FA6017ECABE0266
     echo "deb [signed-by=/etc/apt/keyrings/bruno.gpg] http://debian.usebruno.com/ bruno stable" | sudo tee /etc/apt/sources.list.d/bruno.list 
+
+    #TILIX
+    sudo add-apt-repository ppa:webupd8team/terminix
 }
 
 VSCODE_INSTALL_EXTENSIONS() {
@@ -179,6 +184,12 @@ GIT_CHANGE_DEFAULT_BRANCH_NAME() {
     git config --global init.defaultBranch main
 }
 
+TILIX_CONFIG() {
+    echo -e "${GREEN}[INFO] - Copiando configurações do Tilix.${DEFAULT}"
+    mkdir -p $HOME/.config/tilix
+    dconf load /com/gexperts/Tilix/ < .config/tilix/tilix.dconf
+}
+
 COPY_WALLPAPERS() {
     echo -e "${GREEN}[INFO] - Copiando wallpapers.${DEFAULT}"
     [[ ! -d "$WALLPAPER_DIRECTORY" ]] && mkdir -p "$WALLPAPER_DIRECTORY"
@@ -188,8 +199,7 @@ COPY_WALLPAPERS() {
 SET_WALLPAPER() {
     echo -e "${GREEN}[INFO] - Definindo wallpaper.${DEFAULT}"
     gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER_DIRECTORY/eva01.png"
-gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER_DIRECTORY/eva01.png"
-
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER_DIRECTORY/eva01.png"
 }
 
 UPDATE_AND_CLEAR_SYSTEM() {
@@ -216,6 +226,7 @@ INSTALL_OH_MY_ZSH
 INSTALL_OH_MY_ZSH_PLUGINS
 ZSH_CONFIG
 GIT_CHANGE_DEFAULT_BRANCH_NAME
+TILIX_CONFIG
 COPY_WALLPAPERS
 SET_WALLPAPER
 UPDATE_AND_CLEAR_SYSTEM

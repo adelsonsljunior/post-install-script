@@ -1,0 +1,33 @@
+[/]
+prompt-on-close=true
+prompt-on-delete-profile=true
+window-style='normal'
+
+[keybindings]
+session-add-down='<Primary>f'
+session-add-right='<Primary>r'
+session-resize-terminal-down='<Alt>Down'
+session-resize-terminal-left='<Alt>Left'
+session-resize-terminal-right='<Alt>Right'
+session-resize-terminal-up='<Alt>Up'
+session-switch-to-terminal-down='<Primary>Down'
+session-switch-to-terminal-left='<Primary>Left'
+session-switch-to-terminal-right='<Primary>Right'
+session-switch-to-terminal-up='<Primary>Up'
+session-synchronize-input='<Primary>a'
+win-switch-to-session-1='<Ctrl><Alt>1'
+win-switch-to-session-2='<Primary><Alt>2'
+
+[profiles]
+default='25ffcb09-be00-47c0-871d-7258e89acec1'
+list=['2b7c4080-0ddd-46c5-8f23-563fd3ba789d', '25ffcb09-be00-47c0-871d-7258e89acec1']
+
+[profiles/25ffcb09-be00-47c0-871d-7258e89acec1]
+background-transparency-percent=10
+default-size-columns=85
+font='MesloLGS NF 15'
+use-system-font=false
+visible-name='eu'
+
+[profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
+visible-name='Padrão'
