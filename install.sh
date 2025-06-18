@@ -95,19 +95,21 @@ INSTALL_APT_PROGRAMS() {
 
 ADD_EXTERN_REPOS() {
     #VAGRANT
+    echo -e "${GREEN}[INFO] - Adicionando repositório do Vagrant.${DEFAULT}"
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 
     #VSCODE
-    curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-    sudo add-apt-repository -y "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+    echo -e "${GREEN}[INFO] - Adicionando repositório do Visual Studio Code.${DEFAULT}"
+    curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+    rm -f packages.microsoft.gpg
 
     #BRUNO
+    echo -e "${GREEN}[INFO] - Adicionando repositório do Bruno.${DEFAULT}"
     sudo gpg --no-default-keyring --keyring /etc/apt/keyrings/bruno.gpg --keyserver keyserver.ubuntu.com --recv-keys 9FA6017ECABE0266
     echo "deb [signed-by=/etc/apt/keyrings/bruno.gpg] http://debian.usebruno.com/ bruno stable" | sudo tee /etc/apt/sources.list.d/bruno.list 
-
-    #TILIX
-    sudo add-apt-repository ppa:webupd8team/terminix
 }
 
 VSCODE_INSTALL_EXTENSIONS() {
@@ -216,6 +218,7 @@ APT_UPDATE
 INSTALL_APT_PROGRAMS
 VSCODE_INSTALL_EXTENSIONS
 VSCODE_CONFIG
+TILIX_CONFIG
 INSTALL_FLATPAK_PROGRAMS
 INSTALL_DOCKER
 UP_PORTAINER
@@ -226,7 +229,6 @@ INSTALL_OH_MY_ZSH
 INSTALL_OH_MY_ZSH_PLUGINS
 ZSH_CONFIG
 GIT_CHANGE_DEFAULT_BRANCH_NAME
-TILIX_CONFIG
 COPY_WALLPAPERS
 SET_WALLPAPER
 UPDATE_AND_CLEAR_SYSTEM
