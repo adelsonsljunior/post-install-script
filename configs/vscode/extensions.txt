@@ -1,4 +1,5 @@
 arcticicestudio.nord-visual-studio-code
+PKief.material-icon-theme
 eamodio.gitlens
 github.copilot
 github.copilot-chat
@@ -10,8 +11,5 @@ ms-vscode-remote.remote-wsl
 ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.remote-explorer
 ms-vscode.remote-server
-equinusocio.vsc-material-theme-icons
-rangav.vscode-thunder-client
-tonybaloney.vscode-pets
 visualstudioexptteam.intellicode-api-usage-examples
 visualstudioexptteam.vscodeintellicode
