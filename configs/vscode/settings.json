@@ -6,6 +6,9 @@
     "terminal.integrated.fontSize": 14,
     // Configs
     "files.autoSave": "afterDelay",
+    "workbench.layoutControl.enabled": false,
+    "chat.commandCenter.enabled": false,
+    "window.commandCenter": false,
     "github.copilot.enable": {
         "*": true,
         "markdown": false,
