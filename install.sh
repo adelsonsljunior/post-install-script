@@ -143,6 +143,10 @@ INSTALL_SDKMAN_JAVA() {
     sdk install java
 }
 
+INSTALL_UV(){
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+}
+
 INSTALL_OH_MY_ZSH() {
     echo "[INFO] - Instalando oh-my-zsh."
     yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -183,6 +187,7 @@ INSTALL_DOCKER
 UP_PORTAINER
 INSTALL_ASDF
 INSTALL_SDKMAN_JAVA
+INSTALL_UV
 INSTALL_OH_MY_ZSH
 INSTALL_OH_MY_ZSH_PLUGINS
 ZSH_CONFIG
