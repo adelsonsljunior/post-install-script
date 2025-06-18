@@ -38,14 +38,18 @@ DEPENDENCIES=(
     git
 )
 
+GREEN='\e[0;32m'
+RED='\e[0;31m'
+DEFAULT='\e[0m'
+
 ## RESOLVENDO DEPENDÊNCIAS
 for dependence in ${DEPENDENCIES[@]}; do
     if ! dpkg -l | grep -qw "$dependence"; then # Só instala se já não estiver instalado
-        echo "[INFO] - $dependence não está instalado."
-        echo "[INFO] - Instalando ${dependence}."
+        echo -e "${RED}[ERRO] - $dependence não está instalado.${DEFAULT}"
+        echo -e "${GREEN}[INFO] - Instalando ${dependence}.${DEFAULT}"
         sudo apt install $dependence -y
     else
-        echo "[INFO] - $dependence já está instalado."
+        echo -e "${GREEN}[INFO] - $dependence já está instalado.${DEFAULT}"
     fi
 done
 
@@ -61,9 +65,9 @@ INSTALL_DEB_PROGRAMS() {
     for url in ${DEP_PACKAGES[@]}; do
         package_name=$(basename "$url" | cut -d _ -f1)
         if ! dpkg -l | grep -iq $package_name; then
-            echo "[INFO] - Baixando $package_name."
+            echo -e "${GREEN}[INFO] - Baixando $package_name.${DEFAULT}"
             curl -L --progress-bar -o "$DOWNLOADS_DIRECTORY/$(basename "$url")" "$url"
-            echo "[INFO] - Instalando $package_name."
+            echo -e "${GREEN}[INFO] - Instalando $package_name.${DEFAULT}"
             sudo dpkg -i "$DOWNLOADS_DIRECTORY/$(basename "$url")"
             sudo apt install -f -y # Corrigir dependências quebradas
         else
@@ -79,10 +83,10 @@ APT_UPDATE() {
 INSTALL_APT_PROGRAMS() {
     for program in ${APT_PROGRAMS[@]}; do
         if ! dpkg -l | grep -iq $program; then
-            echo "[INFO] - Instalando $program."
+            echo -e "${GREEN}[INFO] - Instalando $program."
             sudo apt install $program -y
         else
-            echo "[INFO] - $program já está instalado."
+            echo -e "${GREEN}[INFO] - $program já está instalado.${DEFAULT}"
         fi
     done
 }
@@ -98,37 +102,38 @@ ADD_EXTERN_REPOS() {
 }
 
 VSCODE_INSTALL_EXTENSIONS() {
-    echo "[INFO] - Instalando extensões do vscode."
+    echo -e "${GREEN}[INFO] - Instalando extensões do vscode.${DEFAULT}"
     cat ./configs/vscode/extensions.txt | xargs -L 1 code --install-extension
 }
 
 VSCODE_CONFIG() {
     [[ ! -d "$VSCODE_CONFIGS_DIRECTORY" ]] && mkdir -p "$VSCODE_CONFIGS_DIRECTORY"
-    echo "[INFO] - Copiando configurações do vscode."
+    echo -e "${GREEN}[INFO] - Copiando configurações do vscode.${DEFAULT}"
     cp ./configs/vscode/settings.json $HOME/.config/Code/User
 }
 
 INSTALL_FLATPAK_PROGRAMS() {
     for app in ${FLATPAK_PROGRAMS[@]}; do
+        echo -e "${GREEN}[INFO] - Instalando $program."
         sudo flatpak install flathub $app -y
     done
 }
 
 INSTALL_DOCKER() {
-    echo "[INFO] - Instalando Docker."
+    echo -e "${GREEN}[INFO] - Instalando Docker.${DEFAULT}"
     curl -fsSL https://get.docker.com | sudo bash
     sudo groupadd docker
     sudo usermod -aG docker $USER
 }
 
 UP_PORTAINER() {
-    echo "[INFO] - Subindo Portainer."
+    echo -e "${GREEN}[INFO] - Subindo Portainer.${DEFAULT}"
     sudo docker volume create portainer_data
     sudo docker run -d -p 8000:8000 -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
 }
 
 INSTALL_ASDF() {
-    echo "[INFO] - Instalando asdf."
+    echo -e "${GREEN}[INFO] - Instalando asdf.${DEFAULT}"
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0
     . "$HOME/.asdf/asdf.sh"
     echo -e '\n. $HOME/.asdf/asdf.sh' >>~/.bashrc
@@ -136,47 +141,48 @@ INSTALL_ASDF() {
 }
 
 INSTALL_SDKMAN_JAVA() {
-    echo "[INFO] - Instalando sdkman."
+    echo -e "${GREEN}[INFO] - Instalando sdkman.${DEFAULT}"
     curl -s "https://get.sdkman.io" | bash
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-    echo "[INFO] - Instalando Java."
+    echo "[INFO] - Instalando Java.${DEFAULT}"
     sdk install java
 }
 
 INSTALL_UV(){
+    echo -e "${GREEN}[INFO] - Instalando uv.${DEFAULT}"
     curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 
 INSTALL_OH_MY_ZSH() {
-    echo "[INFO] - Instalando oh-my-zsh."
+    echo -e "${GREEN}[INFO] - Instalando oh-my-zsh.${DEFAULT}"
     yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
 INSTALL_OH_MY_ZSH_PLUGINS() {
-    echo "[INFO] - Instalando plugins do oh-my-zsh."
+    echo -e "${GREEN}[INFO] - Instalando plugins do oh-my-zsh.${DEFAULT}"
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
 }
 
 ZSH_CONFIG() {
-    echo "[INFO] - Copiando configurações do zsh."
+    echo -e "${GREEN}[INFO] - Copiando configurações do zsh.${DEFAULT}"
     cp ./configs/zsh/.zshrc $HOME/.zshrc
 }
 
 GIT_CHANGE_DEFAULT_BRANCH_NAME() {
-    echo "[INFO] - Alterando nome da branch padrão do git."
+    echo -e "${GREEN}[INFO] - Alterando nome da branch padrão do git.${DEFAULT}"
     git config --global init.defaultBranch main
 }
 
 COPY_WALLPAPERS() {
-    echo "[INFO] - Copiando wallpapers."
+    echo -e "${GREEN}[INFO] - Copiando wallpapers.${DEFAULT}"
     [[ ! -d "$WALLPAPER_DIRECTORY" ]] && mkdir -p "$WALLPAPER_DIRECTORY"
     cp ./configs/wallpapers/* $WALLPAPER_DIRECTORY
 }
 
 SET_WALLPAPER() {
-    echo "[INFO] - Definindo wallpaper."
+    echo -e "${GREEN}[INFO] - Definindo wallpaper.${DEFAULT}"
     gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER_DIRECTORY/eva01.png"
 gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER_DIRECTORY/eva01.png"
 
