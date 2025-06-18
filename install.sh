@@ -21,7 +21,6 @@ APT_PROGRAMS=(
 )
 
 FLATPAK_PROGRAMS=(
-    org.localsend.localsend_app
     com.obsproject.Studio
     md.obsidian.Obsidian
     org.kde.okular
