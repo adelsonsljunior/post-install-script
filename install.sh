@@ -128,7 +128,7 @@ UP_PORTAINER() {
 
 INSTALL_ASDF() {
     echo "[INFO] - Instalando asdf."
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0
     . "$HOME/.asdf/asdf.sh"
     echo -e '\n. $HOME/.asdf/asdf.sh' >>~/.bashrc
     echo -e '\n. $HOME/.asdf/completions/asdf.bash' >>~/.bashrc
