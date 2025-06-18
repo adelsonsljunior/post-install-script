@@ -178,6 +178,8 @@ COPY_WALLPAPERS() {
 SET_WALLPAPER() {
     echo "[INFO] - Definindo wallpaper."
     gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER_DIRECTORY/eva01.png"
+gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER_DIRECTORY/eva01.png"
+
 }
 
 UPDATE_AND_CLEAR_SYSTEM() {
