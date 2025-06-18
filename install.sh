@@ -19,6 +19,7 @@ APT_PROGRAMS=(
     code
     vagrant
     zsh
+    bruno
 )
 
 FLATPAK_PROGRAMS=(
@@ -98,6 +99,10 @@ ADD_EXTERN_REPOS() {
     #VSCODE
     curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
     sudo add-apt-repository -y "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+
+    #BRUNO
+    sudo gpg --no-default-keyring --keyring /etc/apt/keyrings/bruno.gpg --keyserver keyserver.ubuntu.com --recv-keys 9FA6017ECABE0266
+    echo "deb [signed-by=/etc/apt/keyrings/bruno.gpg] http://debian.usebruno.com/ bruno stable" | sudo tee /etc/apt/sources.list.d/bruno.list 
 }
 
 VSCODE_INSTALL_EXTENSIONS() {
