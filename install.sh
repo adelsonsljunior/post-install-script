@@ -85,7 +85,7 @@ APT_UPDATE() {
 INSTALL_APT_PROGRAMS() {
     for program in ${APT_PROGRAMS[@]}; do
         if ! dpkg -l | grep -iq $program; then
-            echo -e "${GREEN}[INFO] - Instalando $program."
+            echo -e "${GREEN}[INFO] - Instalando $program.${DEFAULT}"
             sudo apt install $program -y
         else
             echo -e "${GREEN}[INFO] - $program já está instalado.${DEFAULT}"
@@ -145,8 +145,8 @@ INSTALL_ASDF() {
     echo -e "${GREEN}[INFO] - Instalando asdf.${DEFAULT}"
     git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0
     . "$HOME/.asdf/asdf.sh"
-    echo -e '\n. $HOME/.asdf/asdf.sh' >>~/.bashrc
-    echo -e '\n. $HOME/.asdf/completions/asdf.bash' >>~/.bashrc
+    echo '\n. $HOME/.asdf/asdf.sh' >>~/.bashrc
+    echo '\n. $HOME/.asdf/completions/asdf.bash' >>~/.bashrc
 }
 
 INSTALL_SDKMAN_JAVA() {
