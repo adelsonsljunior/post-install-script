@@ -8,6 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+
 ZSH_THEME="cloud"
 
 # Set list of themes to pick from when loading at random
@@ -25,7 +26,7 @@ ZSH_THEME="cloud"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
-zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
@@ -125,3 +126,8 @@ alias ips="ip -c -br a"
 
 alias c="clear"
 alias k="kubectl"
+alias v="vagrant"
+
+pyclean () {
+    find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete
+}
