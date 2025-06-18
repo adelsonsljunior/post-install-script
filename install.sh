@@ -23,7 +23,6 @@ APT_PROGRAMS=(
 
 FLATPAK_PROGRAMS=(
     com.obsproject.Studio
-    md.obsidian.Obsidian
     org.kde.okular
     org.telegram.desktop
     dev.vencord.Vesktop
