@@ -3,6 +3,7 @@
 ## VARIÁVEIS
 DOWNLOADS_DIRECTORY="$HOME/Downloads/programas"
 VSCODE_CONFIGS_DIRECTORY="$HOME/.config/Code/User"
+WALLPAPER_DIRECTORY="$HOME/Imagens/wallpapers"
 
 DEP_PACKAGES=(
     https://download.virtualbox.org/virtualbox/7.1.6/virtualbox-7.1_7.1.6-167084~Ubuntu~jammy_amd64.deb
@@ -168,6 +169,17 @@ GIT_CHANGE_DEFAULT_BRANCH_NAME() {
     git config --global init.defaultBranch main
 }
 
+COPY_WALLPAPERS() {
+    echo "[INFO] - Copiando wallpapers."
+    [[ ! -d "$WALLPAPER_DIRECTORY" ]] && mkdir -p "$WALLPAPER_DIRECTORY"
+    cp ./configs/wallpapers/* $WALLPAPER_DIRECTORY
+}
+
+SET_WALLPAPER() {
+    echo "[INFO] - Definindo wallpaper."
+    gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER_DIRECTORY/eva01.png"
+}
+
 UPDATE_AND_CLEAR_SYSTEM() {
     sudo apt update -y && sudo apt upgrade -y
     sudo apt autoclean -y
@@ -192,4 +204,6 @@ INSTALL_OH_MY_ZSH
 INSTALL_OH_MY_ZSH_PLUGINS
 ZSH_CONFIG
 GIT_CHANGE_DEFAULT_BRANCH_NAME
+COPY_WALLPAPERS
+SET_WALLPAPER
 UPDATE_AND_CLEAR_SYSTEM
