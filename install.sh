@@ -197,6 +197,11 @@ SET_WALLPAPER() {
     gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER_DIRECTORY/eva01.png"
 }
 
+SET_DEFAULT_TERMINAL() {
+    echo -e "${GREEN}[INFO] - Definindo terminal padrão.${DEFAULT}"
+    echo "2" | sudo update-alternatives --config x-terminal-emulator > /dev/null
+}
+
 UPDATE_AND_CLEAR_SYSTEM() {
     sudo apt update -y && sudo apt upgrade -y
     sudo apt autoclean -y
@@ -224,4 +229,5 @@ ZSH_CONFIG
 GIT_CHANGE_DEFAULT_BRANCH_NAME
 COPY_WALLPAPERS
 SET_WALLPAPER
+SET_DEFAULT_TERMINAL
 UPDATE_AND_CLEAR_SYSTEM
