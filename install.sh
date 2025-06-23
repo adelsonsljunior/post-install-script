@@ -49,7 +49,7 @@ for dependence in ${DEPENDENCIES[@]}; do
     if ! dpkg -l | grep -qw "$dependence"; then # Só instala se já não estiver instalado
         echo -e "${RED}[ERRO] - $dependence não está instalado.${DEFAULT}"
         echo -e "${GREEN}[INFO] - Instalando ${dependence}.${DEFAULT}"
-        sudo apt install $dependence -y
+        sudo apt install $dependence -y > /dev/null
     else
         echo -e "${GREEN}[INFO] - $dependence já está instalado.${DEFAULT}"
     fi
@@ -132,7 +132,7 @@ INSTALL_FLATPAK_PROGRAMS() {
 
 INSTALL_DOCKER() {
     echo -e "${GREEN}[INFO] - Instalando Docker.${DEFAULT}"
-    curl -fsSL https://get.docker.com | sudo bash
+    curl -fsSL https://get.docker.com | sudo bash > /dev/null
     sudo groupadd docker
     sudo usermod -aG docker $USER
 }
@@ -140,12 +140,12 @@ INSTALL_DOCKER() {
 UP_PORTAINER() {
     echo -e "${GREEN}[INFO] - Subindo Portainer.${DEFAULT}"
     sudo docker volume create portainer_data
-    sudo docker run -d -p 8000:8000 -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
+    sudo docker run -d -p 8000:8000 -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts > /dev/null
 }
 
 INSTALL_ASDF() {
     echo -e "${GREEN}[INFO] - Instalando asdf.${DEFAULT}"
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.18.0 > /dev/null
     . "$HOME/.asdf/asdf.sh"
     echo '\n. $HOME/.asdf/asdf.sh' >>~/.bashrc
     echo '\n. $HOME/.asdf/completions/asdf.bash' >>~/.bashrc
@@ -153,27 +153,27 @@ INSTALL_ASDF() {
 
 INSTALL_SDKMAN_JAVA() {
     echo -e "${GREEN}[INFO] - Instalando sdkman.${DEFAULT}"
-    curl -s "https://get.sdkman.io" | bash
+    curl -s "https://get.sdkman.io" | bash > /dev/null
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 
     echo "[INFO] - Instalando Java.${DEFAULT}"
-    sdk install java
+    sdk install java > /dev/null
 }
 
 INSTALL_UV(){
     echo -e "${GREEN}[INFO] - Instalando uv.${DEFAULT}"
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null
 }
 
 INSTALL_OH_MY_ZSH() {
     echo -e "${GREEN}[INFO] - Instalando oh-my-zsh.${DEFAULT}"
-    yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" > /dev/null
 }
 
 INSTALL_OH_MY_ZSH_PLUGINS() {
     echo -e "${GREEN}[INFO] - Instalando plugins do oh-my-zsh.${DEFAULT}"
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-    git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting > /dev/null
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions > /dev/null
 }
 
 ZSH_CONFIG() {
