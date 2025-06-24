@@ -10,6 +10,7 @@ DEP_PACKAGES=(
     https://download.virtualbox.org/virtualbox/7.1.6/virtualbox-7.1_7.1.6-167084~Ubuntu~jammy_amd64.deb
     https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb
+    https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
 )
 
 APT_PROGRAMS=(
@@ -17,7 +18,6 @@ APT_PROGRAMS=(
     htop
     tree
     build-essential
-    code
     vagrant
     zsh
     tilix
@@ -86,7 +86,7 @@ INSTALL_APT_PROGRAMS() {
     for program in ${APT_PROGRAMS[@]}; do
         if ! dpkg -l | grep -iq $program; then
             echo -e "${GREEN}[INFO] - Instalando $program.${DEFAULT}"
-            sudo apt install $program -y
+            sudo apt install $program -y > /dev/null
         else
             echo -e "${GREEN}[INFO] - $program já está instalado.${DEFAULT}"
         fi
@@ -98,13 +98,6 @@ ADD_EXTERN_REPOS() {
     echo -e "${GREEN}[INFO] - Adicionando repositório do Vagrant.${DEFAULT}"
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-
-    #VSCODE
-    echo -e "${GREEN}[INFO] - Adicionando repositório do Visual Studio Code.${DEFAULT}"
-    curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
-    rm -f packages.microsoft.gpg
 }
 
 VSCODE_INSTALL_EXTENSIONS() {
