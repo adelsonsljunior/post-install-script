@@ -4,6 +4,7 @@
 DOWNLOADS_DIRECTORY="$HOME/Downloads/programas"
 VSCODE_CONFIGS_DIRECTORY="$HOME/.config/Code/User"
 WALLPAPER_DIRECTORY="$HOME/Imagens/wallpapers"
+FONTS_DIRECTORY="$HOME/.local/share/fonts"
 
 DEP_PACKAGES=(
     https://download.virtualbox.org/virtualbox/7.1.6/virtualbox-7.1_7.1.6-167084~Ubuntu~jammy_amd64.deb
@@ -182,7 +183,7 @@ GIT_CHANGE_DEFAULT_BRANCH_NAME() {
 
 TILIX_CONFIG() {
     echo -e "${GREEN}[INFO] - Copiando configurações do Tilix.${DEFAULT}"
-    dconf load /com/gexperts/Tilix/ < .config/tilix/tilix.dconf
+    dconf load /com/gexperts/Tilix/ < ./configs/tilix/tilix.dconf
 }
 
 COPY_WALLPAPERS() {
@@ -200,6 +201,14 @@ SET_WALLPAPER() {
 SET_DEFAULT_TERMINAL() {
     echo -e "${GREEN}[INFO] - Definindo terminal padrão.${DEFAULT}"
     echo "2" | sudo update-alternatives --config x-terminal-emulator > /dev/null
+}
+
+INSTALL_MESLO_NF(){
+    echo -e "${GREEN}[INFO] - Instalando fonte Meslo NF.${DEFAULT}"
+    [[ ! -d "$FONTS_DIRECTORY" ]] && mkdir -p "$FONTS_DIRECTORY"
+    curl -L "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Meslo.zip" -o /tmp/Meslo.zip
+    unzip -o /tmp/Meslo.zip -d "$FONTS_DIRECTORY" > /dev/null
+    fc-cache -fv > /dev/null
 }
 
 UPDATE_AND_CLEAR_SYSTEM() {
@@ -229,5 +238,6 @@ ZSH_CONFIG
 GIT_CHANGE_DEFAULT_BRANCH_NAME
 COPY_WALLPAPERS
 SET_WALLPAPER
+INSTALL_MESLO_NF
 SET_DEFAULT_TERMINAL
 UPDATE_AND_CLEAR_SYSTEM
