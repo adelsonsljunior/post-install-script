@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## VARIÁVEIS
-DOWNLOADS_DIRECTORY="$HOME/Downloads/programas"
+DOWNLOADS_DIRECTORY="/tmp/programas"
 VSCODE_CONFIGS_DIRECTORY="$HOME/.config/Code/User"
 WALLPAPER_DIRECTORY="$HOME/Imagens/wallpapers"
 FONTS_DIRECTORY="$HOME/.local/share/fonts"
@@ -70,8 +70,8 @@ INSTALL_DEB_PROGRAMS() {
             echo -e "${GREEN}[INFO] - Baixando $package_name.${DEFAULT}"
             curl -L --progress-bar -o "$DOWNLOADS_DIRECTORY/$(basename "$url")" "$url"
             echo -e "${GREEN}[INFO] - Instalando $package_name.${DEFAULT}"
-            sudo dpkg -i "$DOWNLOADS_DIRECTORY/$(basename "$url")"
-            sudo apt install -f -y # Corrigir dependências quebradas
+            sudo dpkg -i "$DOWNLOADS_DIRECTORY/$(basename "$url")" > /dev/null
+            sudo apt install -f -y > /dev/null # Corrigir dependências quebradas
         else
             echo "[INFO] - $package_name já está instalado."
         fi
@@ -121,7 +121,7 @@ VSCODE_CONFIG() {
 INSTALL_FLATPAK_PROGRAMS() {
     for app in ${FLATPAK_PROGRAMS[@]}; do
         echo -e "${GREEN}[INFO] - Instalando $program."
-        sudo flatpak install flathub $app -y
+        sudo flatpak install flathub $app -y > /dev/null
     done
 }
 
