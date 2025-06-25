@@ -7,6 +7,7 @@ WALLPAPER_DIRECTORY="$HOME/Imagens/wallpapers"
 FONTS_DIRECTORY="$HOME/.local/share/fonts"
 
 DEP_PACKAGES=(
+    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
     https://download.virtualbox.org/virtualbox/7.1.6/virtualbox-7.1_7.1.6-167084~Ubuntu~jammy_amd64.deb
     https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
     https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb
@@ -31,28 +32,20 @@ FLATPAK_PROGRAMS=(
 )
 
 DEPENDENCIES=(
-    curl
     software-properties-common
     apt-transport-https
     zip
     unzip
-    git
-    dconf
+    dconf-cli
 )
 
 GREEN='\e[0;32m'
-RED='\e[0;31m'
 DEFAULT='\e[0m'
 
 ## RESOLVENDO DEPENDÊNCIAS
 for dependence in ${DEPENDENCIES[@]}; do
-    if ! dpkg -l | grep -qw "$dependence"; then # Só instala se já não estiver instalado
-        echo -e "${RED}[ERRO] - $dependence não está instalado.${DEFAULT}"
-        echo -e "${GREEN}[INFO] - Instalando ${dependence}.${DEFAULT}"
-        sudo apt install $dependence -y > /dev/null
-    else
-        echo -e "${GREEN}[INFO] - $dependence já está instalado.${DEFAULT}"
-    fi
+    echo -e "${GREEN}[INFO] - Instalando ${dependence}.${DEFAULT}"
+    sudo apt-get install $dependence -y > /dev/null
 done
 
 ## FUNÇÕES
@@ -62,34 +55,36 @@ REMOVE_LOCKS() {
 }
 
 INSTALL_DEB_PROGRAMS() {
+    echo -e "${GREEN}[INFO] - Instalando pacotes .deb.${DEFAULT}"
     [[ ! -d "$DOWNLOADS_DIRECTORY" ]] && mkdir -p "$DOWNLOADS_DIRECTORY"
 
-    for url in ${DEP_PACKAGES[@]}; do
-        package_name=$(basename "$url" | cut -d _ -f1)
-        if ! dpkg -l | grep -iq $package_name; then
-            echo -e "${GREEN}[INFO] - Baixando $package_name.${DEFAULT}"
-            curl -L --progress-bar -o "$DOWNLOADS_DIRECTORY/$(basename "$url")" "$url"
-            echo -e "${GREEN}[INFO] - Instalando $package_name.${DEFAULT}"
-            sudo dpkg -i "$DOWNLOADS_DIRECTORY/$(basename "$url")" > /dev/null
-            sudo apt install -f -y > /dev/null # Corrigir dependências quebradas
+     for url in "${DEP_PACKAGES[@]}"; do
+        if [[ "$url" == *"code.visualstudio.com"* ]]; then
+            filename="vscode_latest_amd64.deb" # Nome personalizado para o VS Code
+            filepath="$DOWNLOADS_DIRECTORY/$filename"
+            echo -e "${GREEN}[INFO] - Baixando VS Code...${DEFAULT}"
+            curl -sSL --progress-bar -o "$filepath" -J "$url"  # -J para pegar o nome real do arquivo
         else
-            echo "[INFO] - $package_name já está instalado."
+            filename=$(basename "$url")
+            filepath="$DOWNLOADS_DIRECTORY/$filename"
+            echo -e "${GREEN}[INFO] - Baixando $filename...${DEFAULT}"
+            curl -sSL --progress-bar -o "$filepath" "$url"
         fi
+
+        echo -e "${GREEN}[INFO] - Instalando $filename...${DEFAULT}"
+        sudo dpkg -i "$filepath" > /dev/null
+        sudo apt-get install -f -y > /dev/null  # Corrige dependências
     done
 }
 
 APT_UPDATE() {
-    sudo apt update -y
+    sudo apt-get update -y
 }
 
 INSTALL_APT_PROGRAMS() {
     for program in ${APT_PROGRAMS[@]}; do
-        if ! dpkg -l | grep -iq $program; then
-            echo -e "${GREEN}[INFO] - Instalando $program.${DEFAULT}"
-            sudo apt install $program -y > /dev/null
-        else
-            echo -e "${GREEN}[INFO] - $program já está instalado.${DEFAULT}"
-        fi
+        echo -e "${GREEN}[INFO] - Instalando $program.${DEFAULT}"
+        sudo apt-get install $program -y > /dev/null
     done
 }
 
@@ -98,13 +93,6 @@ ADD_EXTERN_REPOS() {
     echo -e "${GREEN}[INFO] - Adicionando repositório do Vagrant.${DEFAULT}"
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-
-    #VSCODE
-    echo -e "${GREEN}[INFO] - Adicionando repositório do Visual Studio Code.${DEFAULT}"
-    curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
-    rm -f packages.microsoft.gpg
 }
 
 VSCODE_INSTALL_EXTENSIONS() {
@@ -119,9 +107,9 @@ VSCODE_CONFIG() {
 }
 
 INSTALL_FLATPAK_PROGRAMS() {
-    for app in ${FLATPAK_PROGRAMS[@]}; do
+    for program in ${FLATPAK_PROGRAMS[@]}; do
         echo -e "${GREEN}[INFO] - Instalando $program."
-        sudo flatpak install flathub $app -y > /dev/null
+        sudo flatpak install flathub $program -y > /dev/null
     done
 }
 
@@ -213,8 +201,8 @@ INSTALL_MESLO_NF(){
 
 UPDATE_AND_CLEAR_SYSTEM() {
     sudo apt update -y && sudo apt upgrade -y
-    sudo apt autoclean -y
-    sudo apt autoremove -y
+    sudo apt-get autoclean -y
+    sudo apt-get autoremove -y
 }
 
 ## EXECUÇÃO
