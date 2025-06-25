@@ -5,7 +5,7 @@
 1. Install Git
 
 ~~~bash
-sudo apt install git -y
+sudo apt install git curl -y
 ~~~
 
 2. Clone this repository
