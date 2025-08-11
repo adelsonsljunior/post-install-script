@@ -118,6 +118,9 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 export PATH=$PATH:$(go env GOPATH)/bin
 export PATH=/home/adelson/.local/bin:$PATH
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+source <(kubectl completion zsh)
 
 ## ALIAS
 alias upup="sudo apt update -y && sudo apt upgrade -y"
