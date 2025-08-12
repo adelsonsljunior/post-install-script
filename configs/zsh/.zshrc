@@ -8,7 +8,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-
 ZSH_THEME="cloud"
 
 # Set list of themes to pick from when loading at random
@@ -76,6 +75,7 @@ plugins=(
     zsh-syntax-highlighting
     zsh-autosuggestions
     z
+    python
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -113,14 +113,15 @@ source $ZSH/oh-my-zsh.sh
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+. "$HOME/.local/bin/env"
+
 . "$HOME/.asdf/asdf.sh"
-. "/home/adelson/.local/bin"
+. "$HOME/.asdf/completions/asdf.bash"
 
 export PATH=$PATH:$(go env GOPATH)/bin
-export PATH=/home/adelson/.local/bin:$PATH
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 source <(kubectl completion zsh)
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 ## ALIAS
 alias upup="sudo apt update -y && sudo apt upgrade -y"
@@ -130,7 +131,3 @@ alias ips="ip -c -br a"
 alias c="clear"
 alias k="kubectl"
 alias v="vagrant"
-
-pyclean () {
-    find . -regex '^.*\(__pycache__\|\.py[co]\)$' -delete
-}
