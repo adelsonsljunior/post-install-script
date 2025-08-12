@@ -115,11 +115,13 @@ export SDKMAN_DIR="$HOME/.sdkman"
 
 . "$HOME/.local/bin/env"
 
+# asdf 0.14.1
 . "$HOME/.asdf/asdf.sh"
 . "$HOME/.asdf/completions/asdf.bash"
 
 export PATH=$PATH:$(go env GOPATH)/bin
 
+# kubectl
 source <(kubectl completion zsh)
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
